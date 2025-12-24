@@ -158,26 +158,6 @@ actual object ExplorerAreaManager {
     private fun computeDtSec(prevTs: Long, timestampMs: Long): Double =
         (timestampMs - prevTs) / 1000.0
 
-    // ---------- Tunnel segments ----------
-    fun getTunnelSegmentsAsGeojsonLines(): List<List<Point>> {
-        val out = ArrayList<List<Point>>(tunnelSegments.size)
-        for (seg in tunnelSegments) {
-            if (seg.size >= 2) {
-                val a = seg[0]
-                val b = seg[1]
-                val (aln, alat) = mercatorToLonLat(a.first, a.second)
-                val (bln, blat) = mercatorToLonLat(b.first, b.second)
-                out.add(
-                    listOf(
-                        Point.fromLngLat(aln, alat),
-                        Point.fromLngLat(bln, blat)
-                    )
-                )
-            }
-        }
-        return out
-    }
-
     // ---------- GeoJSON export ----------
     fun toGeoJsonPolygon(): Polygon {
         val geom = exploredRef.get() ?: return Polygon.fromLngLats(listOf(worldRing()))
